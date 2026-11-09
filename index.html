@@ -1091,6 +1091,7 @@ function afterStepFail(ok) {   // ① を まちがえた 問題は ② が で�
   state.phase = 'next'; state.reveal = true; state.view = 'ans';
   draw(); renderControls(); renderStatus();
   setMessage((ok ? ['② は せいかい！', 'でも ① を まちがえたので、もう一度'] : ['ざんねん！　' + C.describe(q, cls), ...q.reason]).join('\n'));
+  if (ok) { flashScreen(); showMaru('② せいかい！'); }   // ① を まちがえても ② が できたら まるで ほめる（11-10 先生）
   state.onNext = () => { newProblem(); setMessage('もういちど！\n' + hint()); };
 }
 // ---------- ヒント ----------
