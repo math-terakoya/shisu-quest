@@ -360,8 +360,8 @@ sup.ex { font-size: 0.68em; vertical-align: 0.62em; line-height: 0; margin-left:
     <div class="hero">🎯</div>
     <h1>れんしゅう<br>クリア！</h1>
     <div class="points">
-      <div>・<b>かけざん</b> → 指数の たしざん</div>
-      <div>・<b>( )の セット乗</b> → 指数の かけざん</div>
+      <div>・<b>かけ算</b> → 指数の たし算</div>
+      <div>・<b>( )の セット乗</b> → 指数の かけ算</div>
       <div>・<b>マイナス乗</b> → 逆数</div>
     </div>
     <button class="start-btn" id="goBtn">▶ しょうえらびへ</button>
@@ -562,7 +562,7 @@ function makeOptions(q, rng) {
   if (m === 'baseExp') {   // 9^{1/2} ＝ (3²)^{1/2} ＝ 3^{□}
     opOptions(Q(q.k), q.e, 'mul', add);
   }
-  if (m === 'mix') {   // 底を そろえた あと たしざん・ひきざん
+  if (m === 'mix') {   // 底を そろえた あと たし算・ひき算
     const [x, y, z] = q.es, exp = qs(x) + ' ＋ ' + qp(y) + (q.div ? ' − ' : ' ＋ ') + qp(z);
     add(exp, 'r', []);
     add(qs(x) + ' ＋ ' + qp(y) + (q.div ? ' ＋ ' : ' − ') + qp(z), 'w1', [q.div ? 'subw' : 'addw']);
@@ -600,7 +600,7 @@ function texts(q) {
   return T[m]();
 }
 // ---------- 理由 ----------
-const RULE = { mul: 'かけざん → 指数の たしざん（aʳ × aˢ ＝ a^{r ＋ s}）', div: 'わりざん（分数）→ 指数の ひきざん（{aʳ|aˢ} ＝ a^{r − s}）', pow: '( )の セット乗 → 指数の かけざん（(aʳ)ˢ ＝ a^{rs}）', dist: '( )の セット乗は 中の それぞれに 分配（(ab)ˢ ＝ aˢbˢ）→ a の 指数は かけざん' };
+const RULE = { mul: 'かけ算 → 指数の たし算（aʳ × aˢ ＝ a^{r ＋ s}）', div: 'わり算（分数）→ 指数の ひき算（{aʳ|aˢ} ＝ a^{r − s}）', pow: '( )の セット乗 → 指数の かけ算（(aʳ)ˢ ＝ a^{rs}）', dist: '( )の セット乗は 中の それぞれに 分配（(ab)ˢ ＝ aˢbˢ）→ a の 指数は かけ算' };
 function reasonLines(q) {
   const m = q.mode, L = [], add = s => L.push(s);
   if (m === 'law' || m === 'letter' || m === 'frac') {
@@ -613,8 +613,8 @@ function reasonLines(q) {
   if (m === 'zero') add('0乗は 必ず 1（2³ ＝ 8 → 2² ＝ 4 → 2¹ ＝ 2 → 2⁰ ＝ 1：指数が 1 へる たびに 2 で わる）');
   if (m === 'negp' || m === 'ladder') { add('指数が 1 へる たびに ' + q.b + ' で わる：' + pw(q.b, 0) + ' ＝ 1 → ' + pw(q.b, '−1') + ' ＝ ' + fr(1, q.b)); add('マイナス乗は 逆数を とる：a^{−n} ＝ ' + fr(1, 'a^{n}') + '（マイナスの 数には ならない）'); }
   if (m === 'base') add(q.n + ' ＝ ' + Array(q.k).fill(q.b).join(' × ') + ' ＝ ' + pw(q.b, q.k));
-  if (m === 'baseExp') { add(q.n + ' ＝ ' + pw(q.b, q.k) + ' → (' + pw(q.b, q.k) + ')^{' + qs(q.e) + '}：( )の セット乗 → 指数の かけざん'); add('□ ＝ ' + q.k + ' × ' + qp(q.e) + ' ＝ ' + qs(qmul(Q(q.k), q.e))); }
-  if (m === 'mix') { add('かけざん → 指数の たしざん、' + (q.div ? 'わりざん（分母）→ 指数の ひきざん' : '3つとも かけざん → ぜんぶ たしざん')); const [x, y, z] = q.es; add('□ ＝ ' + qs(x) + ' ＋ ' + qp(y) + (q.div ? ' − ' : ' ＋ ') + qp(z) + ' ＝ ' + qs(q.div ? qsub(qadd(x, y), z) : qadd(qadd(x, y), z))); }
+  if (m === 'baseExp') { add(q.n + ' ＝ ' + pw(q.b, q.k) + ' → (' + pw(q.b, q.k) + ')^{' + qs(q.e) + '}：( )の セット乗 → 指数の かけ算'); add('□ ＝ ' + q.k + ' × ' + qp(q.e) + ' ＝ ' + qs(qmul(Q(q.k), q.e))); }
+  if (m === 'mix') { add('かけ算 → 指数の たし算、' + (q.div ? 'わり算（分母）→ 指数の ひき算' : '3つとも かけ算 → ぜんぶ たし算')); const [x, y, z] = q.es; add('□ ＝ ' + qs(x) + ' ＋ ' + qp(y) + (q.div ? ' − ' : ' ＋ ') + qp(z) + ' ＝ ' + qs(q.div ? qsub(qadd(x, y), z) : qadd(qadd(x, y), z))); }
   return L;
 }
 
@@ -646,7 +646,7 @@ const MONSTERS = [
   ['letter', 'モジノジ', '🔤', 'a⁵a⁻²：文字が 続くと かけ算 → 指数は たす'],
   ['frac', 'ブンスウ', '🍕', '分数の 指数でも 法則は 同じ'],
   ['base', 'ソロエ', '🧩', '9 ＝ 3²、8 ＝ 2³、125 ＝ 5³'],
-  ['baseExp', 'セットジョウ', '🎁', '(3²)^{1|2}：指数の かけざん'],
+  ['baseExp', 'セットジョウ', '🎁', '(3²)^{1|2}：指数の かけ算'],
   ['mix', 'マトメ', '🧮', 'かける → たす、わる → ひく を まとめて'],
 ].map(([id, name, sprite, tip]) => ({ id, ch: FORM_LV[id], name, sprite, tip }))
   .concat(NORM_CH.filter(c => c.mab).map(c => ({ id: c.mab.form, ch: c.ch, name: c.mab.name, sprite: c.mab.sprite, tip: c.mab.tip, mab: true })))
@@ -724,9 +724,9 @@ function build(prm, rng, opt = {}) {
 function judge(p, ans) { return p.options[ans.opt].correct; }
 function classify(p, ans) { return { types: p.options[ans.opt].types.slice() }; }
 const TYPE_TEXT = {
-  addw: 'かけざん は 指数の たしざん', subw: 'わりざん（分数）は 指数の ひきざん', mulw: '( )の セット乗 は 指数の かけざん',
+  addw: 'かけ算 は 指数の たし算', subw: 'わり算（分数）は 指数の ひき算', mulw: '( )の セット乗 は 指数の かけ算',
   zero0: '0乗は 0 では なく 1', zero1: '0乗は 底の 数 では なく 1', negw: 'マイナス乗は マイナスの 数 では なく 逆数', inv: 'マイナス乗は 逆数（分母に）',
-  basew: '底を 何回 かけると その 数に なるか', mulw2: 'かけざん・わりざんは 指数の たしざん・ひきざん', scatter: 'ちがう ものを えらんだ',
+  basew: '底を 何回 かけると その 数に なるか', mulw2: 'かけ算・わり算は 指数の たし算・ひき算', scatter: 'ちがう ものを えらんだ',
 };
 const MASTER_TEXT = { addw: 'かける → たす', subw: 'わる → ひく', mulw: 'セット乗 → かける', zero0: '0乗', zero1: '0乗', negw: 'マイナス乗', inv: 'マイナス乗', basew: '底を そろえる', mulw2: 'まとめて' };
 function describe(p, cls) { return cls.types.map(t => TYPE_TEXT[t]).join('、'); }
@@ -1274,9 +1274,9 @@ function next() { if (state.phase !== 'next' || !state.onNext) return; const cb 
 // ---------- チュートリアル ----------
 const TUT = [
   { prm: { mode: 'law', kind: 'mul', base: 2, base2: 3, a: [3, 1], b: [2, 1] }, right: '3 ＋ 2',
-    msg: '【れんしゅう 1/3】2³ × 2² は 2 を 3個 と 2個 かける → 5個。\nかけざん は 指数の たしざん。「3 ＋ 2」を えらぼう', wrongOpt: 'かけざん は 指数の たしざん だよ' },
+    msg: '【れんしゅう 1/3】2³ × 2² は 2 を 3個 と 2個 かける → 5個。\nかけ算 は 指数の たし算。「3 ＋ 2」を えらぼう', wrongOpt: 'かけ算 は 指数の たし算 だよ' },
   { prm: { mode: 'law', kind: 'pow', base: 2, base2: 3, a: [3, 1], b: [2, 1] }, right: '3 × 2',
-    msg: '【れんしゅう 2/3】(2³)² は 2³ が 2セット → (2³) × (2³)。\n( )の セット乗 は 指数の かけざん。「3 × 2」を えらぼう', wrongOpt: 'セット乗 は 指数の かけざん だよ' },
+    msg: '【れんしゅう 2/3】(2³)² は 2³ が 2セット → (2³) × (2³)。\n( )の セット乗 は 指数の かけ算。「3 × 2」を えらぼう', wrongOpt: 'セット乗 は 指数の かけ算 だよ' },
   { prm: { mode: 'negp', b: 2, n: 3 }, right: '{1|2^{3}}',
     msg: '【れんしゅう 3/3】指数が 1 へる たびに 2 で わる：2⁰ ＝ 1、2⁻¹ ＝ {1|2}…\nマイナス乗 は 逆数。「{1|2^{3}}」を えらぼう', wrongOpt: 'マイナス乗 は 逆数（マイナスの 数 では ない）だよ' },
 ];
