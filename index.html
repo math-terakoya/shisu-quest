@@ -339,6 +339,10 @@ sup.ex { font-size: 0.68em; vertical-align: 0.62em; line-height: 0; margin-left:
 .maru.gold span { text-shadow: 3px 3px 0 #8a5a00, 0 0 14px #ffd84a; }
 @keyframes maru { 0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0; } 22% { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
   36% { transform: translate(-50%, -50%) scale(1); } 78% { opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.04); opacity: 0; } }
+/* — 文字 大／小（11-20 先生：年配の 同僚から「問題の 文字が 小さい」。大 は ゲーム全体を 同じ 割合で 大きく。えらんだ ほうは この 端末に おぼえる） — */
+.moji { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; color: #aaa; font-size: 13px; letter-spacing: 1px; }
+.moji-btn { background: #000; border: 2px solid #666; color: #aaa; font-family: inherit; font-size: 15px; min-width: 44px; padding: 6px 10px; cursor: pointer; }
+.moji-btn.on { border-color: #ffff00; color: #ffff00; }
 </style>
 </head>
 <body>
@@ -352,6 +356,7 @@ sup.ex { font-size: 0.68em; vertical-align: 0.62em; line-height: 0; margin-left:
     <p style="margin-top:20px;">かける？ わる？ セット乗？<br>指数を 何算 するか みきわめろ！</p>
     <button class="start-btn" id="startBtn">▶ はじめる</button>
     <button class="how-btn" id="howBtn">？ あそびかた</button>
+    <div class="moji">もじ<button class="moji-btn" data-v="small">小</button><button class="moji-btn" data-v="big">大</button></div>
     <p class="sub" style="margin-top:20px;font-size:10px;">4つの 章（どこからでも）→ さいごの 章<br>モンスターずかんを うめよう</p>
     <p class="sub" style="margin-top:14px;font-size:9px;opacity:0.7;">© 2026 math-terakoya　CC BY-NC-SA 4.0</p>
   </div>
@@ -402,6 +407,7 @@ sup.ex { font-size: 0.68em; vertical-align: 0.62em; line-height: 0; margin-left:
     <p class="sub" id="mapLV" style="margin-bottom:8px;">ゆうしゃ LV 1</p>
     <p class="comp hidden" id="mapComp"></p>
     <button class="zukan-btn" id="zukanBtn">📖 モンスターずかん</button>
+    <div class="moji">もじ<button class="moji-btn" data-v="small">小</button><button class="moji-btn" data-v="big">大</button></div>
     <div id="chapterList"></div>
   </div>
 
@@ -1407,5 +1413,33 @@ renderTitleComp(); renderStatus(); renderControls();
   };
   new MutationObserver(fit).observe(el, { childList: true, characterData: true, subtree: true });
   window.addEventListener('resize', fit); fit();
+})();
+</script>
+<script>
+// 文字 大／小。大 は #game に zoom を かけ、たて・よこは 割り戻して 画面に ちょうど 入れる（vh は 使わず px で 入れる）
+(() => {
+  const KEY = 'mt-moji', g = document.getElementById('game');
+  let big = false, busy = false;
+  try { big = localStorage.getItem(KEY) === 'big'; } catch (e) {}
+  const apply = () => {
+    if (busy) return; busy = true;
+    const W = innerWidth, H = innerHeight;
+    if (!big) { g.style.zoom = ''; g.style.width = ''; g.style.maxWidth = ''; g.style.height = ''; g.style.maxHeight = ''; }
+    else {
+      const z = W >= 600 ? Math.max(1.1, Math.min(1.6, H / 680, W / 480)) : 1.15;
+      g.style.zoom = z; g.style.maxWidth = 'none'; g.style.maxHeight = 'none';
+      g.style.width = Math.min(480, W / z) + 'px'; g.style.height = (H / z) + 'px';
+    }
+    document.querySelectorAll('.moji-btn').forEach(b => b.classList.toggle('on', (b.dataset.v === 'big') === big));
+    window.dispatchEvent(new Event('resize'));
+    busy = false;
+  };
+  document.querySelectorAll('.moji-btn').forEach(b => b.addEventListener('click', () => {
+    big = b.dataset.v === 'big';
+    try { localStorage.setItem(KEY, big ? 'big' : 'small'); } catch (e) {}
+    apply();
+  }));
+  window.addEventListener('resize', apply);
+  apply();
 })();
 </script>
