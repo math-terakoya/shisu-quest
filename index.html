@@ -344,6 +344,8 @@ sup.ex { font-size: 0.68em; vertical-align: 0.62em; line-height: 0; margin-left:
 .moji { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; color: #aaa; font-size: 13px; letter-spacing: 1px; }
 .moji-btn { background: #000; border: 2px solid #666; color: #aaa; font-family: inherit; font-size: 15px; min-width: 44px; padding: 6px 10px; cursor: pointer; }
 .moji-btn.on { border-color: #ffff00; color: #ffff00; }
+#game.moji-big #controls .key.opt { font-size: 22px; }   /* 大 は 選択肢を さらに 大きく（11-20 先生：選択肢の 文字）。長い ときは fitOpts が 小さく する */
+#game.moji-big #controls.three .key.opt { font-size: 26px; }
 </style>
 </head>
 <body>
@@ -1433,6 +1435,7 @@ renderTitleComp(); renderStatus(); renderControls();
       g.style.zoom = z; g.style.maxWidth = 'none'; g.style.maxHeight = 'none';
       g.style.width = Math.min(480, W / z) + 'px'; g.style.height = (H / z) + 'px';
     }
+    g.classList.toggle('moji-big', big && W >= 600);   // 選択肢を さらに 大きく するのは 広い 画面だけ（スマホは 下が はみ出す）
     document.querySelectorAll('.moji-btn').forEach(b => b.classList.toggle('on', (b.dataset.v === 'big') === big));
     window.dispatchEvent(new Event('resize'));
     busy = false;
