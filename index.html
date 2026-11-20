@@ -340,7 +340,7 @@ sup.ex { font-size: 0.68em; vertical-align: 0.62em; line-height: 0; margin-left:
 .maru.gold span { text-shadow: 3px 3px 0 #8a5a00, 0 0 14px #ffd84a; }
 @keyframes maru { 0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0; } 22% { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
   36% { transform: translate(-50%, -50%) scale(1); } 78% { opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.04); opacity: 0; } }
-/* — 文字 大／小（11-20 先生：年配の 同僚から「問題の 文字が 小さい」。大 は ゲーム全体を 同じ 割合で 大きく。えらんだ ほうは この 端末に おぼえる） — */
+/* — 文字 大／小（11-20 先生：年配の 同僚から「問題の 文字が 小さい」。大 は ゲーム全体を 同じ 割合で 大きく。えらんだ ほうは この スマホ・パソコンに おぼえる） — */
 .moji { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; color: #aaa; font-size: 13px; letter-spacing: 1px; }
 .moji-btn { background: #000; border: 2px solid #666; color: #aaa; font-family: inherit; font-size: 15px; min-width: 44px; padding: 6px 10px; cursor: pointer; }
 .moji-btn.on { border-color: #ffff00; color: #ffff00; }
@@ -1431,7 +1431,7 @@ renderTitleComp(); renderStatus(); renderControls();
     const W = innerWidth, H = innerHeight;
     if (!big) { g.style.zoom = ''; g.style.width = ''; g.style.maxWidth = ''; g.style.height = ''; g.style.maxHeight = ''; }
     else {
-      const z = W >= 600 ? Math.max(1.1, Math.min(1.6, H / 680, W / 480)) : 1.15;
+      const z = W >= 600 ? Math.max(1.1, Math.min(1.6, H / 680, W / 480)) : (H >= 640 ? 1.15 : 1);   // たての みじかい スマホは 大きく しない（下が はみ出す）
       g.style.zoom = z; g.style.maxWidth = 'none'; g.style.maxHeight = 'none';
       g.style.width = Math.min(480, W / z) + 'px'; g.style.height = (H / z) + 'px';
     }
